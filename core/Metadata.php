@@ -15,8 +15,8 @@ class Metadata {
 		$this->metadata = File::exec(METADATA_PATH . $dir, $filename);
 	}
 	
-	public function get($key, $orElse = null) {
-		return Arr::get($this->metadata, $key, $orElse);
+	public function get($key = null, $orElse = null) {
+		return $key !== null ? Arr::get($this->metadata, $key, $orElse) : $this->metadata;
 	}
 	
 	static function load($path) {

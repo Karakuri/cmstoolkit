@@ -2,6 +2,8 @@
 
 namespace core;
 
+use core\snippets\Instance;
+
 use core\exceptions\PageNotFoundException;
 
 class Controller {
@@ -16,19 +18,23 @@ class Controller {
 		}
 	}
 	
-	public function getParameter($key) {
-		return $this->route->getParameter($key);
+	public function getParameter($key = null) {
+		return $key !== null ? $this->route->getParameter($key) : $this->route->getParameter();
 	}
 	
-	public function getMetadata($key) {
+	public function getMetadata($key = null) {
 		if (!$this->metadata) {
 			$this->metadata = Metadata::load($this->getPagePath());
 		}
 		
-		return $this->metadata->get($key);
+		return $key !== null ? $this->metadata->get($key) : $this->metadata->get();
 	}
 	
 	public function getPagePath() {
 		return $this->route->getPagePath();
+	}
+	
+	public function renderPage() {
+		return View::render($this->getMetadata('view_path'), $this);
 	}
 }

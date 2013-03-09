@@ -5,4 +5,6 @@ return array(
 	'session' => 'mongo',
 	// キャッシュ管理クラスを指定
 	'cache' => 'apc',
+	// ビュークラスを指定
+	'view' => 'twig',
 );

@@ -1,0 +1,13 @@
+{% snippet test  %}
+{% js "/test.js" %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>{{ meta.title }}</title>
+</head>
+<body>
+{{ snippets.test.test() }}
+{% js_output %}
+</body>
+</html>

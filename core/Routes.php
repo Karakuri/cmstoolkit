@@ -19,8 +19,8 @@ class Routes {
 		return '([^\/]+)';
 	}
 	
-	public function getParameter($key) {
-		return Arr::get($this->parameters, $key);
+	public function getParameter($key = null) {
+		return $key !== null ? Arr::get($this->parameters, $key) : $this->parameters;;
 	}
 	
 	public function getPagePath() {
@@ -31,7 +31,7 @@ class Routes {
 		if ($uri == '') {
 			$uri = "index";
 		}
-		$result = preg_match('/' . $this->path . '/u', $uri, $matches);
+		$result = preg_match('/^' . $this->path . '$/u', $uri, $matches);
 		if ($result > 0) {
 			if (count($this->parameters) > 0) {
 				$this->parameters = array_combine(array_keys($this->parameters), array_slice($matches, 1));
