@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buildpath>
+	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
+	<buildpathentry excluding="views/**" kind="src" path="core"/>
+	<buildpathentry kind="src" path="classes"/>
+</buildpath>
