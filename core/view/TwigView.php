@@ -63,8 +63,7 @@ class Project_Snippet_Node extends \Twig_Node
 		$compiler
 		->addDebugInfo($this)
 		->write('$context[\'snippets\'][\''.($this->getAttribute('alias') ?: $this->getAttribute('name')).'\'] = core\\Snippet::get(\''.$this->getAttribute('name').'\');' . "\n")
-		->write('$context[\'snippets\'][\''.($this->getAttribute('alias') ?: $this->getAttribute('name')).'\']->init($context[\'controller\']);' . "\n")
-		->write('$context[\'snippets\'][\''.($this->getAttribute('alias') ?: $this->getAttribute('name')).'\']->execute();' . "\n")
+		->write('$context[\'snippets\'][\''.($this->getAttribute('alias') ?: $this->getAttribute('name')).'\']->_init(\''.($this->getAttribute('alias') ?: $this->getAttribute('name')).'\', $context[\'controller\']);' . "\n")
 		;
 	}
 }
@@ -99,7 +98,13 @@ class Project_Js_Node extends \Twig_Node
 	{
 		$compiler
 		->addDebugInfo($this)
-		->write('$context[\'controller\']->setAttribute(\'assets.js.\', \''.$this->getAttribute('src').'\');' . "\n")
+		->write('if (null === ($snippet = $context[\'controller\']->getSnippet(\'include_assets\'))) { ' . "\n")
+		->indent()
+		->write('$snippet = core\\Snippet::get(\'include_assets\');' . "\n")
+		->write('$snippet->_init(\'include_assets\', $context[\'controller\']);' . "\n")
+		->outdent()
+		->write('}')
+		->write('$snippet->addJs(\'' . $this->getAttribute('src') . '\');' . "\n")
 		;
 	}
 }

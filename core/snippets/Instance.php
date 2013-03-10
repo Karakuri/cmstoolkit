@@ -7,13 +7,16 @@ use core\Controller;
 abstract class Instance {
 	private $controller;
 	
-	public function init(Controller $controller) {
+	public function _init($name, Controller $controller) {
 		$this->controller = $controller;
+		$controller->registerSnippet($name, $this);
+		
+		$this->init();
 	}
 	
 	public function getController() {
 		return $this->controller;
 	}
 	
-	abstract function execute();
+	abstract function init();	
 }

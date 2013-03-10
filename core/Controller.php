@@ -10,6 +10,8 @@ class Controller {
 	private $route;
 	private $metadata;
 	private $attributes;
+	private $snippets = array();
+	private $events = array();
 	
 	public function __construct($uri) {
 		$this->route = Routes::get($uri);
@@ -41,12 +43,43 @@ class Controller {
 		$this->attributes->set($key, $value);
 	}
 	
+	public function registerSnippet($name, Instance $snippet) {
+		$this->snippets[$name] = $snippet;
+	}
+	
+	public function getSnippet($name) {
+		return array_key_exists($name, $this->snippets) ? $this->snippets[$name] : null;
+	}
+	
 	public function getPagePath() {
 		return $this->route->getPagePath();
 	}
 	
 	public function renderPage() {
 		$result = View::render($this->getMetadata('view'), $this);
+		$result = $this->callEvent('postRender', array($result));
+		return $result;
+	}
+	
+	public function registerEvent($name, $callable) {
+		if (!is_callable($callable)) {
+			// TODO
+			return;
+		}
+		
+		$this->events[$name][] = $callable;
+	}
+	
+	public function callEvent($name, $args = array()) {
+		if (!array_key_exists($name, $this->events)) {
+			return;
+		}
+		
+		$result = null;
+		foreach ($this->events[$name] as $callable) {
+			$result = call_user_func_array($callable, array_merge($args, array($result)));
+		}
+		
 		return $result;
 	}
 }

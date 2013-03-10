@@ -4,8 +4,7 @@ return array(
 	'view' => array(
 		'path' => 'pages/index.html',
 	),
-	'filter' => array(
-		'assets_include'
-	),
+	'snippets' => array(),
+	
 	'title' => 'テストタイトル'
 );
