@@ -1,6 +1,11 @@
 <?php 
 
 return array(
-	'view_path' => 'pages/index.html',
+	'view' => array(
+		'path' => 'pages/index.html',
+	),
+	'filter' => array(
+		'assets_include'
+	),
 	'title' => 'テストタイトル'
 );

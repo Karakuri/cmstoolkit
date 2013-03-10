@@ -16,11 +16,10 @@ class TwigView implements Instance {
 		));
 		$this->twig->addTokenParser(new Project_Snippet_TokenParser());
 		$this->twig->addTokenParser(new Project_Js_TokenParser());
-		$this->twig->addTokenParser(new Project_JsOutput_TokenParser());
 	}
 	
-	public function render($path, Controller $controller) {
-		return $this->twig->render($path, array(
+	public function render($options, Controller $controller) {
+		return $this->twig->render($options['path'], array(
 				'controller' => $controller
 				,'meta' => $controller->getMetadata()
 				,'param' => $controller->getParameter()));
@@ -100,45 +99,7 @@ class Project_Js_Node extends \Twig_Node
 	{
 		$compiler
 		->addDebugInfo($this)
-		->write('$context[\'js\'][] = \''.$this->getAttribute('src').'\';' . "\n")
-		;
-	}
-}
-
-class Project_JsOutput_TokenParser extends \Twig_TokenParser
-{
-	public function parse(\Twig_Token $token)
-	{
-		$stream = $this->parser->getStream();
-		$lineno = $token->getLine();
-
-		$this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
-
-		return new Project_JsOutput_Node($lineno, $this->getTag());
-	}
-
-	public function getTag()
-	{
-		return 'js_output';
-	}
-}
-
-class Project_JsOutput_Node extends \Twig_Node
-{
-	public function __construct($lineno, $tag = null)
-	{
-		parent::__construct(array(), array(), $lineno, $tag);
-	}
-
-	public function compile(\Twig_Compiler $compiler)
-	{
-		$compiler
-		->addDebugInfo($this)
-		->write('foreach (core\\Arr::get($context, \'js\', array()) as $src) {' . "\n")
-		->indent()
-		->write('echo \'<script src="\'.$src.\'"></script>\'."\\n";')
-		->outdent()
-		->write('}' . "\n")
+		->write('$context[\'controller\']->setAttribute(\'assets.js.\', \''.$this->getAttribute('src').'\');' . "\n")
 		;
 	}
 }

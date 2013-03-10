@@ -6,5 +6,5 @@ use core\Controller;
 
 interface Instance {
 	public function init();
-	public function render($path, Controller $controller);
+	public function render($options, Controller $controller);
 }

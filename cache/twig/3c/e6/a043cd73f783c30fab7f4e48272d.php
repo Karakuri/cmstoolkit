@@ -20,7 +20,7 @@ class __TwigTemplate_3ce6a043cd73f783c30fab7f4e48272d extends Twig_Template
         $context['snippets']['test']->init($context['controller']);
         $context['snippets']['test']->execute();
         // line 2
-        $context['js'][] = '/test.js';
+        $context['js'][] = 'assets/js/test.js';
         // line 3
         echo "<!DOCTYPE html>
 <html>

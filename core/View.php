@@ -3,19 +3,16 @@
 namespace core;
 
 class View {
-	private static $instance;
 	
-	private static function init() {
-		if (!self::$instance) {
+	public static function render($options, $controller) {
+		if (array_key_exists('type', $options)) {
+			$viewName = $options['type'];
+		} else {
 			$viewName = Config::get('config.view');
-			$className = Config::get("view.$viewName");
-			self::$instance = new $className;
-			self::$instance->init();
 		}
-	}
-	
-	public static function render($path, $controller) {
-		self::init();
-		return self::$instance->render($path, $controller);
+		$className = Config::get("view.$viewName");
+		$instance = new $className;
+		$instance->init();
+		return $instance->render($options, $controller);
 	}
 }

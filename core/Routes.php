@@ -9,14 +9,14 @@ class Routes {
 	
 	public function __construct($path, $pagePath) {
 		$path = str_replace('/', '\/', $path);
-		$this->path = preg_replace_callback("/:([a-zA-Z0-9_]+)/u", array($this, 'addParameter'), $path);
+		$this->path = preg_replace_callback("/([:*])([a-zA-Z0-9_]+)/u", array($this, 'addParameter'), $path);
 		$this->pagePath = $pagePath;
 	}
 	
 	public function addParameter($matches) {
-		$this->parameters[$matches[1]] = null;
+		$this->parameters[$matches[2]] = null;
 		
-		return '([^\/]+)';
+		return $matches[1] == ':' ? '([^\/]+)' : '(.+)';
 	}
 	
 	public function getParameter($key = null) {

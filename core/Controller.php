@@ -9,6 +9,7 @@ use core\exceptions\PageNotFoundException;
 class Controller {
 	private $route;
 	private $metadata;
+	private $attributes;
 	
 	public function __construct($uri) {
 		$this->route = Routes::get($uri);
@@ -16,6 +17,8 @@ class Controller {
 		if (!$this->route) {
 			throw new PageNotFoundException($uri);
 		}
+		
+		$this->attributes = new Attributes();
 	}
 	
 	public function getParameter($key = null) {
@@ -30,11 +33,20 @@ class Controller {
 		return $key !== null ? $this->metadata->get($key) : $this->metadata->get();
 	}
 	
+	public function getAttribute($key, $orElse = null) {
+		return $this->attributes->get($key, $orElse);
+	}
+	
+	public function setAttribute($key, $value) {
+		$this->attributes->set($key, $value);
+	}
+	
 	public function getPagePath() {
 		return $this->route->getPagePath();
 	}
 	
 	public function renderPage() {
-		return View::render($this->getMetadata('view_path'), $this);
+		$result = View::render($this->getMetadata('view'), $this);
+		return $result;
 	}
 }
