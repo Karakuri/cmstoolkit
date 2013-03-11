@@ -15,7 +15,7 @@ class Controller {
 	
 	public function __construct(Request $request) {
 		$this->request = $request;
-		$this->route = Routes::get($request->getPath());
+		$this->route = Routes::get($request->getPath(), $this->request->getMethod());
 		$this->metadata = Metadata::load($this->getPagePath());
 		
 		if (!$this->route) {

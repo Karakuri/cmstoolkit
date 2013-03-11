@@ -12,6 +12,10 @@ class Request {
 		$this->request = $request;
 	}
 	
+	public function getMethod() {
+		return $this->server['REQUEST_METHOD'];
+	}
+	
 	public function getParameter($key = null, $orElse = null) {
 		if ($key === null) {
 			return $this->request;

@@ -4,10 +4,18 @@ namespace core;
 
 class Routes {
 	private $parameters = array();
+	private $method = null;
 	private $path;
 	private $pagePath;
 	
 	public function __construct($path, $pagePath) {
+		foreach (array('GET', 'POST', 'PUT', 'DELETE', 'HEAD') as $method) {
+			if (strpos($path, $method . ' ') === 0) {
+				$this->method = $method;
+				$path = substr($path, strlen($method . ' '));
+				break;
+			}
+		}
 		$path = str_replace('/', '\/', $path);
 		$this->path = preg_replace_callback("/([:*])([a-zA-Z0-9_]+)/u", array($this, 'addParameter'), $path);
 		$this->pagePath = $pagePath;
@@ -27,7 +35,11 @@ class Routes {
 		return $this->pagePath;
 	}
 	
-	public function match($uri) {
+	public function match($uri, $method = null) {
+		if ($method !== null && $this->method !== $method) {
+			return false;
+		}
+		
 		if ($uri == '') {
 			$uri = "index";
 		}
@@ -44,13 +56,13 @@ class Routes {
 		return false;
 	}
 	
-	static function get($uri) {
+	static function get($uri, $method = null) {
 		$routes = Config::get('routes');
 		
 		foreach ($routes as $path => $dest) {
 			$instance = new self($path, $dest);
 			
-			if ($instance->match($uri)) {
+			if ($instance->match($uri, $method)) {
 				return $instance;
 			}
 		}
