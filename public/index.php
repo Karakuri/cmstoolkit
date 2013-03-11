@@ -5,5 +5,11 @@ use core\Controller;
 
 include '../bootstrap.php';
 
-$controller = new Controller(Request::getFromRequest());
-echo $controller->renderPage();
+try {
+	$controller = new Controller(Request::getFromRequest());
+	echo $controller->renderPage();
+} catch (RedirectException $e) {
+	header('Location: ' . $e->getMessage(), true, $e->getCode());
+} catch (Exception $e) {
+	throw $e;
+}

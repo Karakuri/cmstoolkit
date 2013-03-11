@@ -88,6 +88,10 @@ class Controller {
 		return $result;
 	}
 	
+	public function Redirect($uri, $status = 303) {
+		throw new RedirectException($uri, $status);
+	}
+	
 	public function registerEvent($name, $callable) {
 		if (!is_callable($callable)) {
 			// TODO
