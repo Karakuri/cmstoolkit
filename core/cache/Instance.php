@@ -7,4 +7,5 @@ interface Instance {
 	public function set($key, $value);
 	public function isExists($key);
 	public function remove($key);
+	public function clear();
 }
