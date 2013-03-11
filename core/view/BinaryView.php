@@ -9,7 +9,7 @@ use core\Controller;
 class BinaryView implements Instance {
 	public function init() {}
 	
-	public function render($options, Controller $controller) {
-		return File::exec(VIEW_PATH, $options['path'], array('controller' => $controller));
+	public function render($path, Controller $controller) {
+		return File::exec(VIEW_PATH, $path, array('controller' => $controller));
 	}
 }

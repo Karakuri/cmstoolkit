@@ -13,6 +13,6 @@ class View {
 		$className = Config::get("view.$viewName");
 		$instance = new $className;
 		$instance->init();
-		return $instance->render($options, $controller);
+		return $instance->render($options['path'], $controller);
 	}
 }
