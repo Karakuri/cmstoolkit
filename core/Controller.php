@@ -3,7 +3,6 @@
 namespace core;
 
 use core\snippets\Instance;
-
 use core\exceptions\PageNotFoundException;
 
 class Controller {
@@ -15,12 +14,25 @@ class Controller {
 	
 	public function __construct($uri) {
 		$this->route = Routes::get($uri);
+		$this->metadata = Metadata::load($this->getPagePath());
 		
 		if (!$this->route) {
 			throw new PageNotFoundException($uri);
 		}
 		
 		$this->attributes = new Attributes();
+		
+		foreach ($this->metadata->get('snippets.preload', array()) as $val) {
+			if (is_array($name)) {
+				$name = $val[0];
+				$alias = array_key_exists('as', $val) ? $val['as'] : $name;
+			} else {
+				$name = $val;
+				$alias = $name;
+			}
+			$snippet = Snippet::get($name);
+			$snippet->_init($alias, $this);
+		}
 	}
 	
 	public function getParameter($key = null) {
@@ -28,10 +40,6 @@ class Controller {
 	}
 	
 	public function getMetadata($key = null) {
-		if (!$this->metadata) {
-			$this->metadata = Metadata::load($this->getPagePath());
-		}
-		
 		return $key !== null ? $this->metadata->get($key) : $this->metadata->get();
 	}
 	
