@@ -55,7 +55,10 @@ class Controller {
 		$this->snippets[$name] = $snippet;
 	}
 	
-	public function getSnippet($name) {
+	public function getSnippet($name = null) {
+		if ($name === null) {
+			return $this->snippets;
+		}
 		return array_key_exists($name, $this->snippets) ? $this->snippets[$name] : null;
 	}
 	

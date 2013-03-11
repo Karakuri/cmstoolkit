@@ -21,6 +21,7 @@ class TwigView implements Instance {
 	public function render($options, Controller $controller) {
 		return $this->twig->render($options['path'], array(
 				'controller' => $controller
+				,'snippets' => $controller->getSnippet()
 				,'meta' => $controller->getMetadata()
 				,'param' => $controller->getParameter()));
 	}
