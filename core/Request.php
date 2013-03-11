@@ -33,7 +33,7 @@ class Request {
 		static $reqUri;
 
 		$reqUri = substr($this->server['REQUEST_URI'], 1);
-		if (false !== ($hashPos = strpos($reqUri, '?'))) {
+		if (false !== ($hashPos = strpos($reqUri, '#'))) {
 			$reqUri = substr($reqUri, 0, $hashPos);
 		}
 		
