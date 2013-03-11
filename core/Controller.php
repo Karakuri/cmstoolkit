@@ -40,6 +40,14 @@ class Controller {
 	public function getParameter($key, $orElse = null) {
 		return $this->request->getParameter($key, $orElse);
 	}
+
+	public function getCookie($key = null, $orElse = null) {
+		return $this->request->getCookie($key, $orElse);
+	}
+	
+	public function setCookie($name, $value, $expire = 0, $path = '', $domain = '', $secure = false, $httponly = false) {
+		setCookie($name, $value, $expire, $path, $domain, $secure, $httponly);
+	}
 	
 	public function getRouteParameter($key = null, $orElse = null) {
 		return $key !== null ? $this->route->getParameter($key, $orElse) : $this->route->getParameter();

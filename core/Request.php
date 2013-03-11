@@ -5,14 +5,19 @@ namespace core;
 class Request {
 	private $server;
 	private $request;
+	private $cookie;
 	
-	public function __construct($server = array(), $request = array()) {
+	public function __construct($server = array(), $request = array(), $cookie = array()) {
 		$this->server = $server;
 		$this->request = $request;
 	}
 	
 	public function getParameter($key, $orElse = null) {
 		return Arr::get($request, $key, $orElse);
+	}
+	
+	public function getCookie($key, $orElse = null) {
+		return Arr::get($this->cookie, $key, $orElse);
 	}
 
 	public function getPathArray() {
@@ -40,6 +45,6 @@ class Request {
 	}
 	
 	static function getFromRequest() {
-		return new self($_SERVER, $_REQUEST);
+		return new self($_SERVER, $_GET + $_POST, $_COOKIE);
 	}
 }
