@@ -16,6 +16,14 @@ class Request {
 		return $this->server['REQUEST_METHOD'];
 	}
 	
+	public function isHttps() {
+		return $this->server['HTTPS'] == 'on';
+	}
+	
+	public function getHost() {
+		return $this->server['HTTP_HOST'];
+	}
+	
 	public function getParameter($key = null, $orElse = null) {
 		if ($key === null) {
 			return $this->request;
