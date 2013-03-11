@@ -21,9 +21,7 @@ class TwigView implements Instance {
 	public function render($options, Controller $controller) {
 		return $this->twig->render($options['path'], array(
 				'controller' => $controller
-				,'snippets' => $controller->getSnippet()
-				,'meta' => $controller->getMetadata()
-				,'param' => $controller->getParameter()));
+				);
 	}
 }
 
@@ -63,8 +61,7 @@ class Project_Snippet_Node extends \Twig_Node
 	{
 		$compiler
 		->addDebugInfo($this)
-		->write('$context[\'snippets\'][\''.($this->getAttribute('alias') ?: $this->getAttribute('name')).'\'] = core\\Snippet::get(\''.$this->getAttribute('name').'\');' . "\n")
-		->write('$context[\'snippets\'][\''.($this->getAttribute('alias') ?: $this->getAttribute('name')).'\']->_init(\''.($this->getAttribute('alias') ?: $this->getAttribute('name')).'\', $context[\'controller\']);' . "\n")
+		->write('core\\Snippet::get(\''.$this->getAttribute('name').'\')->_init(\''.($this->getAttribute('alias') ?: $this->getAttribute('name')).'\', $context[\'controller\']);' . "\n")
 		;
 	}
 }
