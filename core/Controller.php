@@ -37,7 +37,7 @@ class Controller {
 		}
 	}
 	
-	public function getParameter($key, $orElse = null) {
+	public function getParameter($key = null, $orElse = null) {
 		return $this->request->getParameter($key, $orElse);
 	}
 
@@ -50,11 +50,11 @@ class Controller {
 	}
 	
 	public function getRouteParameter($key = null, $orElse = null) {
-		return $key !== null ? $this->route->getParameter($key, $orElse) : $this->route->getParameter();
+		return $this->route->getParameter($key, $orElse);
 	}
 	
 	public function getMetadata($key = null, $orElse = null) {
-		return $key !== null ? $this->metadata->get($key, $orElse) : $this->metadata->get();
+		return $this->metadata->get($key, $orElse);
 	}
 	
 	public function getAttribute($key, $orElse = null) {

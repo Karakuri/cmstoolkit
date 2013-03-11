@@ -12,11 +12,17 @@ class Request {
 		$this->request = $request;
 	}
 	
-	public function getParameter($key, $orElse = null) {
-		return Arr::get($request, $key, $orElse);
+	public function getParameter($key = null, $orElse = null) {
+		if ($key === null) {
+			return $this->request;
+		}
+		return Arr::get($this->request, $key, $orElse);
 	}
 	
-	public function getCookie($key, $orElse = null) {
+	public function getCookie($key = null, $orElse = null) {
+		if ($key === null) {
+			return $this->cookie;
+		}
 		return Arr::get($this->cookie, $key, $orElse);
 	}
 

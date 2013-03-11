@@ -19,6 +19,18 @@ class TwigView implements Instance {
 	}
 	
 	public function render($options, Controller $controller) {
+		$metaFunc = new Twig_SimpleFunction('meta', array($controller,'getMetadata'));
+		$paramFunc = new Twig_SimpleFunction('param', array($controller,'getParameter'));
+		$routeParamFunc = new Twig_SimpleFunction('route_param', array($controller,'getRouteParameter'));
+		$cookieFunc = new Twig_SimpleFunction('cookie', array($controller,'getCookie'));
+		$snippetFunc = new Twig_SimpleFunction('snippet', array($controller,'getSnippet'));
+		
+		$this->twig->addFunction($metaFunc);
+		$this->twig->addFunction($paramFunc);
+		$this->twig->addFunction($routeParamFunc);
+		$this->twig->addFunction($cookieFunc);
+		$this->twig->addFunction($snippetFunc);
+		
 		return $this->twig->render($options['path'], array(
 				'controller' => $controller
 				);
