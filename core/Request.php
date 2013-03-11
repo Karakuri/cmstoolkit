@@ -3,19 +3,31 @@
 namespace core;
 
 class Request {
-	static function getPathArray() {
+	private $server;
+	private $request;
+	
+	public function __construct($server = array(), $request = array()) {
+		$this->server = $server;
+		$this->request = $request;
+	}
+	
+	public function getParameter($key, $orElse = null) {
+		return Arr::get($request, $key, $orElse);
+	}
+
+	public function getPathArray() {
 		static $path;
 
-		$reqUri = self::getPath();
+		$reqUri = $this->getPath();
 		$path = explode('/', $reqUri);
 
 		return $path;
 	}
 	
-	static function getPath() {
+	public function getPath() {
 		static $reqUri;
 
-		$reqUri = substr($_SERVER['REQUEST_URI'], 1);
+		$reqUri = substr($this->server['REQUEST_URI'], 1);
 		if (false !== ($hashPos = strpos($reqUri, '?'))) {
 			$reqUri = substr($reqUri, 0, $hashPos);
 		}
@@ -25,5 +37,9 @@ class Request {
 		}
 		
 		return $reqUri;
+	}
+	
+	static function getFromRequest() {
+		return new self($_SERVER, $_REQUEST);
 	}
 }

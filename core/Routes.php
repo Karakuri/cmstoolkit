@@ -19,8 +19,8 @@ class Routes {
 		return $matches[1] == ':' ? '([^\/]+)' : '(.+)';
 	}
 	
-	public function getParameter($key = null) {
-		return $key !== null ? Arr::get($this->parameters, $key) : $this->parameters;;
+	public function getParameter($key = null, $orElse = null) {
+		return $key !== null ? Arr::get($this->parameters, $key, $orElse) : $this->parameters;;
 	}
 	
 	public function getPagePath() {

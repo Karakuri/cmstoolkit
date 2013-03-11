@@ -9,15 +9,17 @@ class Controller {
 	private $route;
 	private $metadata;
 	private $attributes;
+	private $request;
 	private $snippets = array();
 	private $events = array();
 	
-	public function __construct($uri) {
-		$this->route = Routes::get($uri);
+	public function __construct(Request $request) {
+		$this->request = $request;
+		$this->route = Routes::get($request->getPath());
 		$this->metadata = Metadata::load($this->getPagePath());
 		
 		if (!$this->route) {
-			throw new PageNotFoundException($uri);
+			throw new PageNotFoundException($request->getPath());
 		}
 		
 		$this->attributes = new Attributes();
@@ -35,12 +37,16 @@ class Controller {
 		}
 	}
 	
-	public function getParameter($key = null) {
-		return $key !== null ? $this->route->getParameter($key) : $this->route->getParameter();
+	public function getParameter($key, $orElse = null) {
+		return $this->request->getParameter($key, $orElse);
 	}
 	
-	public function getMetadata($key = null) {
-		return $key !== null ? $this->metadata->get($key) : $this->metadata->get();
+	public function getRouteParameter($key = null, $orElse = null) {
+		return $key !== null ? $this->route->getParameter($key, $orElse) : $this->route->getParameter();
+	}
+	
+	public function getMetadata($key = null, $orElse = null) {
+		return $key !== null ? $this->metadata->get($key, $orElse) : $this->metadata->get();
 	}
 	
 	public function getAttribute($key, $orElse = null) {
