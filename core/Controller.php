@@ -88,7 +88,7 @@ class Controller {
 		return $result;
 	}
 	
-	public function Redirect($uri, $status = 303) {
+	public function redirect($uri, $status = 303) {
 		throw new RedirectException($uri, $status);
 	}
 	
