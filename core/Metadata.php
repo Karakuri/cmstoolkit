@@ -4,6 +4,7 @@ namespace core;
 
 class Metadata {
 	private $metadata = array();
+	private $super = null;
 	
 	public function __construct($path) {
 		$dir = '';
@@ -13,10 +14,21 @@ class Metadata {
 			$filename = substr($path, $lastSep + 1);
 		}
 		$this->metadata = File::exec(METADATA_PATH . $dir, $filename);
+		
+		if ($this->get('extends') !== null) {
+			$this->super = self::load($this->get('extends'));
+		}
 	}
 	
 	public function get($key = null, $orElse = null) {
-		return $key !== null ? Arr::get($this->metadata, $key, $orElse) : $this->metadata;
+		if ($key === null) {
+			return $this->metadata;
+		}
+		$res = Arr::get($this->metadata, $key, $orElse);
+		if ($res === $orElse && $this->super) {
+			$res = $this->super->get($key, $orElse);
+		}
+		return $res;
 	}
 	
 	static function load($path) {

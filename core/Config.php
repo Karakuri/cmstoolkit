@@ -22,12 +22,7 @@ class Config {
 			return self::$conf[$filename];
 		}
 		
-		$res = Arr::get(self::$conf[$filename], $key, $orElse);
-		if ($res === $orElse && ($extends = Arr::get(self::$conf[$filename], 'extends', false))) {
-			$res = self::get($extends . '.' . $key);
-		}
-		
-		return $res;
+		return Arr::get(self::$conf[$filename], $key, $orElse);
 	}
 	
 	static private function loadFile($filename) {
