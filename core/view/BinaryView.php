@@ -6,7 +6,7 @@ use core\File;
 
 use core\Controller;
 
-class BinaryView implements Instance {
+class BinaryView extends Instance {
 	public function init() {}
 	
 	public function render(Controller $controller) {

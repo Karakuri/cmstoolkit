@@ -5,7 +5,7 @@ namespace core\view;
 use core\Config;
 use core\Controller;
 
-class TwigView implements Instance {
+class TwigView extends Instance {
 	private $loader;
 	private $twig;
 	
@@ -19,21 +19,74 @@ class TwigView implements Instance {
 	}
 	
 	public function render(Controller $controller) {
-		$metaFunc = new Twig_SimpleFunction('meta', array($controller,'getMetadata'));
-		$paramFunc = new Twig_SimpleFunction('param', array($controller,'getParameter'));
-		$routeParamFunc = new Twig_SimpleFunction('route_param', array($controller,'getRouteParameter'));
-		$cookieFunc = new Twig_SimpleFunction('cookie', array($controller,'getCookie'));
-		$snippetFunc = new Twig_SimpleFunction('snippet', array($controller,'getSnippet'));
-		
-		$this->twig->addFunction($metaFunc);
-		$this->twig->addFunction($paramFunc);
-		$this->twig->addFunction($routeParamFunc);
-		$this->twig->addFunction($cookieFunc);
-		$this->twig->addFunction($snippetFunc);
-		
-		return $this->twig->render($this->getPath, array(
-				'controller' => $controller
-				);
+		return $this->twig->render($this->getPath(), array(
+				'controller' => $controller,
+				'meta' => new TwigMetadataObject($controller),
+				'param' => new TwigParameterObject($controller),
+				'route_param' => new TwigRouteParameterObject($controller),
+				'cookie' => new TwigCookieObject($controller),
+				'snippet' => new TwigSnippetObject($controller),
+				));
+	}
+}
+
+class TwigMetadataObject {
+	private $controller;
+	
+	public function __construct(Controller $controller) {
+		$this->controller = $controller;
+	}
+	
+	public function __call($name, $arguments) {
+		return $this->controller->getMetadata($name);
+	}
+}
+
+class TwigParameterObject {
+	private $controller;
+
+	public function __construct(Controller $controller) {
+		$this->controller = $controller;
+	}
+
+	public function __call($name, $arguments) {
+		return $this->controller->getParameter($name);
+	}
+}
+
+class TwigRouteParameterObject {
+	private $controller;
+
+	public function __construct(Controller $controller) {
+		$this->controller = $controller;
+	}
+
+	public function __call($name, $arguments) {
+		return $this->controller->getRouteParameter($name);
+	}
+}
+
+class TwigCookieObject {
+	private $controller;
+
+	public function __construct(Controller $controller) {
+		$this->controller = $controller;
+	}
+
+	public function __call($name, $arguments) {
+		return $this->controller->getCookie($name);
+	}
+}
+
+class TwigSnippetObject {
+	private $controller;
+
+	public function __construct(Controller $controller) {
+		$this->controller = $controller;
+	}
+
+	public function __call($name, $arguments) {
+		return $this->controller->getSnippet($name);
 	}
 }
 

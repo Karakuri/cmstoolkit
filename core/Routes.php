@@ -9,6 +9,7 @@ class Routes {
 	private $pagePath;
 	
 	public function __construct($path, $pagePath) {
+		$this->method = 'GET';
 		foreach (array('GET', 'POST', 'PUT', 'DELETE', 'HEAD') as $method) {
 			if (strpos($path, $method . ' ') === 0) {
 				$this->method = $method;
