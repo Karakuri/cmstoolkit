@@ -27,7 +27,7 @@ class File {
 		throw new FileNotFoundException($filename);
 	}
 	
-	static function exec($path, $name, $extension = 'php') {
+	static function exec($path, $name, $args = array(),$extension = 'php') {
 		if (strrpos($path, DS) !== 0) {
 			$path .= DS;
 		}
@@ -35,6 +35,7 @@ class File {
 		$filename = $path . $name . '.' . 'php';
 		
 		if (is_file($filename)) {
+			extract($args);
 			return (include $filename);
 		}
 		

@@ -1,6 +1,7 @@
 <?php
 
 return array(
-	'asset' => 'core\\view\\AssetView',
 	'twig' => 'core\\view\\TwigView',
+	'binary' => 'core\\view\\BinaryView',
+	'json' => 'core\\view\\JsonView',
 );
