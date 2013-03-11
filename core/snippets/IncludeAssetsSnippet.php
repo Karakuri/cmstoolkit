@@ -26,7 +26,13 @@ class IncludeAssetsSnippet extends Instance {
 			$scripts .=  '<script src="' . $src . '"></script>' . "\n";
 		}
 		
+		$styles = '';
+		foreach ($this->css as $href) {
+			$styles .=  '<link rel="stylesheet" href="' . $href . '" />' . "\n";
+		}
+		
 		if ($result) $html = $result;
+		$html = str_replace('</head>', $styles . '</head>', $html);
 		$html = str_replace('</body>', $scripts . '</body>', $html);
 		return $html;
 	}
