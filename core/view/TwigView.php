@@ -18,7 +18,7 @@ class TwigView implements Instance {
 		$this->twig->addTokenParser(new Project_Js_TokenParser());
 	}
 	
-	public function render($path, Controller $controller) {
+	public function render(Controller $controller) {
 		$metaFunc = new Twig_SimpleFunction('meta', array($controller,'getMetadata'));
 		$paramFunc = new Twig_SimpleFunction('param', array($controller,'getParameter'));
 		$routeParamFunc = new Twig_SimpleFunction('route_param', array($controller,'getRouteParameter'));
@@ -31,7 +31,7 @@ class TwigView implements Instance {
 		$this->twig->addFunction($cookieFunc);
 		$this->twig->addFunction($snippetFunc);
 		
-		return $this->twig->render($path, array(
+		return $this->twig->render($this->getPath, array(
 				'controller' => $controller
 				);
 	}
