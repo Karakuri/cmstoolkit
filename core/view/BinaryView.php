@@ -10,6 +10,6 @@ class BinaryView extends Instance {
 	public function init() {}
 	
 	public function render($controllerOrSnippet) {
-		return File::exec(VIEW_PATH, $this->getPath, array('controller' => $controller));
+		return File::exec(VIEW_PATH, $this->getPath, array('controller' => $controllerOrSnippet));
 	}
 }
