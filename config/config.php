@@ -1,6 +1,8 @@
 <?php
 
 return array(
+	// ベースURL（相対/絶対パス）
+	'base_url' => '',
 	// ソルト
 	'salt' => 'testsalt',
 	// セッション設定

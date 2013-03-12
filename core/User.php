@@ -2,7 +2,7 @@
 
 namespace core;
 
-class User implements Serializable {
+class User implements \Serializable {
 	private $id;
 	private $originalInfo;
 	private $userInfo;
