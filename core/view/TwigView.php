@@ -8,36 +8,59 @@ use core\Controller;
 class TwigView extends Instance {
 	private $loader;
 	private $twig;
-	
+
 	public function init() {
 		$this->loader = new \Twig_Loader_Filesystem(VIEW_PATH);
 		$this->twig = new \Twig_Environment($this->loader,array(
-			'cache' => Config::get('twig.cache_path')
+				'cache' => Config::get('twig.cache_path')
 		));
 		$this->twig->addTokenParser(new Project_Snippet_TokenParser());
 		$this->twig->addTokenParser(new Project_Js_TokenParser());
 	}
+
+	public function render($controllerOrSnippet) {
+		if ($controllerOrSnippet instanceof Controller) {
+			return $this->twig->render($this->getPath(), array(
+					'controller' => $controllerOrSnippet,
+					'meta' => new TwigMetadataObject($controllerOrSnippet),
+					'param' => new TwigParameterObject($controllerOrSnippet),
+					'route_param' => new TwigRouteParameterObject($controllerOrSnippet),
+					'cookie' => new TwigCookieObject($controllerOrSnippet),
+					'snippet' => new TwigSnippetObject($controllerOrSnippet),
+					'conf' => new TwigConfigObject(),
+			));
+		} else if ($controllerOrSnippet instanceof \core\snippets\Instance) {
+			return $this->twig->render($this->getPath(), array(
+					'snippet' => $controllerOrSnippet,
+					'option' => new TwigOptionObject($controllerOrSnippet),
+					'cookie' => new TwigCookieObject($controllerOrSnippet),
+					'conf' => new TwigConfigObject(),
+					));
+		}
+		
+		throw new \InvalidArgumentException('view needs controller or snippet instance', 1, '');
+	}
+}
+
+class TwigOptionObject {
+	private $snippet;
 	
-	public function render(Controller $controller) {
-		return $this->twig->render($this->getPath(), array(
-				'controller' => $controller,
-				'meta' => new TwigMetadataObject($controller),
-				'param' => new TwigParameterObject($controller),
-				'route_param' => new TwigRouteParameterObject($controller),
-				'cookie' => new TwigCookieObject($controller),
-				'snippet' => new TwigSnippetObject($controller),
-				'conf' => new TwigConfigObject(),
-				));
+	public function __construct(\core\snippets\Instance $snippet) {
+		$this->snippet = $snippet;
+	}
+	
+	public function __call($name, $arguments) {
+		return $this->snippet->getOption($name);
 	}
 }
 
 class TwigMetadataObject {
 	private $controller;
-	
+
 	public function __construct(Controller $controller) {
 		$this->controller = $controller;
 	}
-	
+
 	public function __call($name, $arguments) {
 		return $this->controller->getMetadata($name);
 	}
@@ -68,14 +91,14 @@ class TwigRouteParameterObject {
 }
 
 class TwigCookieObject {
-	private $controller;
+	private $controllerOrSnippet;
 
-	public function __construct(Controller $controller) {
-		$this->controller = $controller;
+	public function __construct($controllerOrSnippet) {
+		$this->controllerOrSnippet = $controllerOrSnippet;
 	}
 
 	public function __call($name, $arguments) {
-		return $this->controller->getCookie($name);
+		return $this->controllerOrSnippet->getCookie($name);
 	}
 }
 
@@ -107,7 +130,7 @@ class Project_Snippet_TokenParser extends \Twig_TokenParser
 		$lineno = $token->getLine();
 		$name = $stream->expect(\Twig_Token::NAME_TYPE)->getValue();
 		$alias = null;
-		
+
 		if ($stream->test('as')) {
 			$stream->next();
 			$alias = $stream->expect(\Twig_Token::NAME_TYPE)->getValue();

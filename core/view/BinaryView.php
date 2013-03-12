@@ -9,7 +9,7 @@ use core\Controller;
 class BinaryView extends Instance {
 	public function init() {}
 	
-	public function render(Controller $controller) {
+	public function render($controllerOrSnippet) {
 		return File::exec(VIEW_PATH, $this->getPath, array('controller' => $controller));
 	}
 }

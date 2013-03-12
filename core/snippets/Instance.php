@@ -20,9 +20,13 @@ abstract class Instance {
 		$this->controller->registerEvent($name, $callable);
 	}
 	
-	protected function getOption($key, $orElse = false) {
+	public function getOption($key, $orElse = false) {
 		$name = $this->name;
-		return $this->controller->getMetadata("snippets.options.$name.$key", $orElse);
+		return $this->controller->getMetadata("snippets.$name.options.$key", $orElse);
+	}
+	
+	public function getCookie($key, $orElse = false) {
+		return $this->controller->getAttribute($key, $orElse);
 	}
 	
 	abstract function init();	

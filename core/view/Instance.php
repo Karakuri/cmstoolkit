@@ -17,5 +17,5 @@ abstract class Instance {
 	}
 	
 	abstract function init();
-	abstract function render(Controller $controller);
+	abstract function render($controllerOrSnippet);
 }
