@@ -17,12 +17,7 @@ class Session {
 				array(self::$instance, 'close'),
 				array(self::$instance, 'read'),
 				function ($id, $data) {
-					$session = unserialize($data);
-					foreach (Arr::get($session, 'auth', array()) as $name => $user) {
-						if ($user->needsFlush()) {
-							Auth::wrench($name)->updateUserInfo($user->getId(), $user->getUserInfo());
-						}
-					}
+					self::flushUserInfo($data);
 					self::$instance->write($id, $data);
 				},
 				array(self::$instance, 'destroy'),
@@ -47,5 +42,14 @@ class Session {
 	public static function rotate() {
 		self::init();
 		session_regenerate_id(false);
+	}
+	
+	private static function flushUserInfo($data) {
+		$session = unserialize($data);
+		foreach (Arr::get($session, 'auth', array()) as $name => $user) {
+			if ($user->needsFlush()) {
+				Auth::wrench($name)->updateUserInfo($user->getId(), $user->getUserInfo());
+			}
+		}
 	}
 }
