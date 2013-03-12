@@ -10,7 +10,7 @@ class IncludeAssetsSnippet extends Instance {
 	private $css = array();
 	
 	public function init() {
-		$this->getController()->registerEvent('postRender', array($this, 'onPostRender'));
+		$this->registerEvent('postRender', array($this, 'onPostRender'));
 	}
 	
 	public function addJs($src) {
