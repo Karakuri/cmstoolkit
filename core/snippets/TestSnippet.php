@@ -2,8 +2,6 @@
 
 namespace core\snippets;
 
-use core\Controller;
-
 class TestSnippet extends Instance {
 	public function init() {}
 	

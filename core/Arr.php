@@ -29,7 +29,7 @@ class Arr {
 		self::setRecursive($array, $key, $value);
 	}
 	
-	private function setRecursive(&$array, $key, &$value) {
+	private static function setRecursive(&$array, $key, &$value) {
 		if (false !== ($firstSep = strpos($key, '.'))) {
 			$path = substr($key, 0, $firstSep);
 			$key = substr($key, $firstSep + 1);

@@ -22,7 +22,7 @@ class Mongo {
 			if (Config::get("mongo.$name.replicaSet")) {
 				$options['replicaSet'] = Config::get("mongo.$name.replicaSet");
 			}
-			self::$conns[$name] = new MongoClient("mongodb://$host", $options);
+			self::$conns[$name] = new \MongoClient("mongodb://$host", $options);
 			if (Config::get("mongo.$name.readPreference")) {
 				self::$conns[$name]->setReadPreference(Config::get("mongo.$name.readPreference"));
 			}

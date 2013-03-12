@@ -12,7 +12,7 @@ return array(
 		// 接続先指定
 		'conn' => 'default',
 		// 接続データベース指定
-		'db' => 'test',
+		'db' => 'cmstoolkit',
 		// 利用コレクション指定
 		'collection' => 'sessions',
 	),

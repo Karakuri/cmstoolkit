@@ -16,10 +16,7 @@ class Session {
 				array(self::$instance, 'open'),
 				array(self::$instance, 'close'),
 				array(self::$instance, 'read'),
-				function ($id, $data) {
-					$data = self::flushUserInfo($data);
-					self::$instance->write($id, $data);
-				},
+				array('core\Session', '_write'),
 				array(self::$instance, 'destroy'),
 				array(self::$instance, 'gc')
 			);
@@ -44,13 +41,17 @@ class Session {
 		session_regenerate_id(false);
 	}
 	
+	public static function _write($id, $data) {
+		self::flushUserInfo($data);
+		self::$instance->write($id, $data);
+	}
+	
 	private static function flushUserInfo($data) {
-		$session = unserialize($data);
+		$session = session_decode($data);
 		foreach (Arr::get($session, 'auth', array()) as $name => $user) {
 			if ($user->needsFlush()) {
 				Auth::wrench($name)->updateUserInfo($user->getId(), $user->getUserInfo());
 			}
 		}
-		return $data;
 	}
 }

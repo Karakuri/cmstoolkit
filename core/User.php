@@ -31,8 +31,8 @@ class User implements \Serializable {
 	
 	public function serialize() {
 		return serialize(array(
-			'id' => $this->id;
-			'userInfo' => $this->userInfo;
+			'id' => $this->id,
+			'userInfo' => $this->userInfo,
 		));
 	}
 	

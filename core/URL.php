@@ -12,7 +12,7 @@ class URL {
 			return $path;
 		}
 		
-		$base = Config::get('base_url');
+		$base = Config::get('config.base_url');
 		if (strpos($base, 'http://') === 0) {
 			$base = strpos($base, strlen('http://'));
 		} else if (strpos($base, 'https://') === 0) {

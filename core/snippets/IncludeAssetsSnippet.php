@@ -2,6 +2,7 @@
 
 namespace core\snippets;
 
+use core\URL;
 use core\snippets\Instance;
 
 class IncludeAssetsSnippet extends Instance {

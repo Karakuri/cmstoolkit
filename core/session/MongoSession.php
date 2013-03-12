@@ -2,6 +2,9 @@
 
 namespace core\session;
 
+use core\Config;
+use core\Mongo;
+
 class MongoSession implements Instance {
 	private $collection;
 	private $data;
@@ -23,14 +26,14 @@ class MongoSession implements Instance {
 	}
 	
 	function read($id) {
-		$payload = $this->collection->findOne(array('_id' => new MongoId($id)));
-		$this->data = $payload['data'] !== null ? '' : $payload['data'];
+		$payload = $this->collection->findOne(array('_id' => $id));
+		$this->data = $payload['data'] !== null ? $payload['data'] : '';
 		return $this->data;
 	}
 	
 	function write($id, $data) {
 		if ($this->data != $data) {
-			$this->collection->save(array('_id' => $id, 'data' => $data, 'updateDate' => new MongoDate()));
+			$this->collection->save(array('_id' => $id, 'data' => $data, 'updateDate' => new \MongoDate()));
 		}
 	}
 	
@@ -45,7 +48,7 @@ class MongoSession implements Instance {
 	
 	function gc($maxlifetime) {
 		try {
-			$collection->remove(array('updateDate' => array('$lt' => new MongoDate(time() - $maxlifetime))));
+			$collection->remove(array('updateDate' => array('$lt' => new \MongoDate(time() - $maxlifetime))));
 		} catch (Exception $e) {
 			return false;
 		}

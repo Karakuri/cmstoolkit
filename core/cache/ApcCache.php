@@ -3,8 +3,9 @@
 namespace core\cache;
 
 class ApcCache implements Instance {
-	public function get($key) {
-		return apc_fetch($key);
+	public function get($key, $orElse = null) {
+		$res = apc_fetch($key);
+		return $res !== false ? $res : $orElse;
 	}
 	
 	public function set($key, $value) {
