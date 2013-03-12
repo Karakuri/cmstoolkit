@@ -52,6 +52,6 @@ class Session {
 				$user->flush();
 			}
 		}
-		return serialize($data);
+		return serialize($session);
 	}
 }
