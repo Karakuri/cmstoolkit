@@ -28,4 +28,8 @@ class User {
 	public function needsFlush() {
 		return serialize($this->originalInfo) != serialize($this->userInfo);
 	}
+	
+	public function flush() {
+		$this->originalInfo = $this->userInfo;
+	}
 }

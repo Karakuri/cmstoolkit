@@ -17,7 +17,7 @@ class Session {
 				array(self::$instance, 'close'),
 				array(self::$instance, 'read'),
 				function ($id, $data) {
-					self::flushUserInfo($data);
+					$data = self::flushUserInfo($data);
 					self::$instance->write($id, $data);
 				},
 				array(self::$instance, 'destroy'),
@@ -49,7 +49,9 @@ class Session {
 		foreach (Arr::get($session, 'auth', array()) as $name => $user) {
 			if ($user->needsFlush()) {
 				Auth::wrench($name)->updateUserInfo($user->getId(), $user->getUserInfo());
+				$user->flush();
 			}
 		}
+		return serialize($data);
 	}
 }
