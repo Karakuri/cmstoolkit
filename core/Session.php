@@ -49,9 +49,8 @@ class Session {
 		foreach (Arr::get($session, 'auth', array()) as $name => $user) {
 			if ($user->needsFlush()) {
 				Auth::wrench($name)->updateUserInfo($user->getId(), $user->getUserInfo());
-				$user->flush();
 			}
 		}
-		return serialize($session);
+		return $data;
 	}
 }

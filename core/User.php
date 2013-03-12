@@ -2,7 +2,7 @@
 
 namespace core;
 
-class User {
+class User implements Serializable {
 	private $id;
 	private $originalInfo;
 	private $userInfo;
@@ -29,7 +29,17 @@ class User {
 		return serialize($this->originalInfo) != serialize($this->userInfo);
 	}
 	
-	public function flush() {
-		$this->originalInfo = $this->userInfo;
+	public function serialize() {
+		return serialize(array(
+			'id' => $this->id;
+			'userInfo' => $this->userInfo;
+		));
+	}
+	
+	public function unserialize($data) {
+		$data = unserialize($data);
+		$this->id = $data['id'];
+		$this->originalInfo = $data['userInfo'];
+		$this->userInfo = $data['userInfo'];
 	}
 }
