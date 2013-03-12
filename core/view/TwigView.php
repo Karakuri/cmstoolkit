@@ -26,6 +26,7 @@ class TwigView extends Instance {
 				'route_param' => new TwigRouteParameterObject($controller),
 				'cookie' => new TwigCookieObject($controller),
 				'snippet' => new TwigSnippetObject($controller),
+				'config' => new TwigConfigObject(),
 				));
 	}
 }
@@ -87,6 +88,14 @@ class TwigSnippetObject {
 
 	public function __call($name, $arguments) {
 		return $this->controller->getSnippet($name);
+	}
+}
+
+class TwigConfigObject {
+	private $controller;
+
+	public function __call($name, $arguments) {
+		return Config::get($name);
 	}
 }
 
