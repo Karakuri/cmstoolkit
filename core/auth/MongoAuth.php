@@ -3,6 +3,14 @@
 namespace core\auth;
 
 class MongoAuth extends Instance {
+	private $collection;
+	
+	public function init() {
+		$client = Mongo::getClient($this->getOption('conn', 'default'));
+		$db = $client->selectDB($this->getOption('db'));
+		$this->collection = $db->selectCollection($this->getOption('collection'));
+	}
+
 	public function getUser() {
 		$name = $this->getName();
 		return Session::get("auth.$name");
@@ -12,14 +20,10 @@ class MongoAuth extends Instance {
 		$name = $this->getName();
 		$db = $this->getOption('conn', 'default');
 		
-		$client = Mongo::getClient($db);
-		$db = $client->selectDB($this->getOption('db'));
-		$collection = $db->selectCollection($this->getOption('collection'));
-		
 		if ($force) {
-			$user = $collection->findOne(array('credentials' => $credentials->getIdentifier()));
+			$user = $this->collection->findOne(array('credentials' => $credentials->getIdentifier()));
 		} else {
-			$user = $collection->findOne(array('credentials' => $credentials->getPayLoad()));
+			$user = $this->collection->findOne(array('credentials' => $credentials->getPayLoad()));
 		}
 		
 		if ($user === null) {
@@ -29,20 +33,15 @@ class MongoAuth extends Instance {
 	}
 	
 	public function createUser(core\credentials\Instance $credentials, $userInfo) {
-		$name = $this->getName();
-		$db = $this->getOption('conn', 'default');
-		
-		$client = Mongo::getClient($db);
-		$db = $client->selectDB($this->getOption('db'));
-		$collection = $db->selectCollection($this->getOption('collection'));
-		
-		if ($collection->count(array('credentials' => $credentials->getIdentifier())) > 0) {
+		if ($this->collection->count(array('credentials' => $credentials->getIdentifier())) > 0) {
 			throw new UserAlreadyExistsException();
 		}
 		$collection->insert(array('credentials' => $credentials->getPayLoad(), 'userInfo' => $userInfo));
 	}
 	
-	public function deleteUser($id) {}
+	public function deleteUser($id) {
+		
+	}
 	public function updateUserCredentials($id, core\credentials\Instance $credentials) {}
 	public function updateUserInfo($id, $userInfo) {}
 }

@@ -9,6 +9,8 @@ abstract class Instance {
 	public function __construct($name, $options) {
 		$this->name = $name;
 		$this->options = $options;
+		
+		$this->init();
 	}
 	
 	protected function getName() {
@@ -19,6 +21,7 @@ abstract class Instance {
 		return Arr::get($this->options, $key, $orElse);
 	}
 	
+	abstract function init();
 	abstract function getUser();
 	abstract function login(core\credentials\Instance $credentials, $force = false);
 	abstract function createUser(core\credentials\Instance $credentials, $userInfo);

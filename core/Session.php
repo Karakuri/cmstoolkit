@@ -16,7 +16,15 @@ class Session {
 				array(self::$instance, 'open'),
 				array(self::$instance, 'close'),
 				array(self::$instance, 'read'),
-				array(self::$instance, 'write'),
+				function ($id, $data) {
+					$session = unserialize($data);
+					foreach (Arr::get($session, 'auth', array()) as $name => $user) {
+						if ($user->needsFlush()) {
+							Auth::wrench($name)->updateUserInfo($user->getId(), $user->getUserInfo());
+						}
+					}
+					self::$instance->write($id, $data);
+				},
 				array(self::$instance, 'destroy'),
 				array(self::$instance, 'gc')
 			);
