@@ -79,8 +79,8 @@ class Controller {
 		$view = View::get($this->getMetadata('view.path'), $this->getMetadata('view.type'));
 		$this->callEvent('preRender', array($view));
 		$result = $view->render($this);
-		$result = $this->callEvent('postRender', array($result));
-		return $result;
+		$filtered = $this->callEvent('postRender', array($result));
+		return $filtered !== null ? $filtered : $result;
 	}
 	
 	public function redirect($uri, $status = 303) {

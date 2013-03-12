@@ -68,10 +68,10 @@ class Routes {
 			}
 		}
 		
-		return self::get404();
+		return self::get404($uri);
 	}
 	
-	static function get404() {
-		return new self($uri, 'error/404');
+	static function get404($uri) {
+		return new self($uri, '/error/404');
 	}
 }
