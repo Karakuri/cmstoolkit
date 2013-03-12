@@ -2,6 +2,8 @@
 
 namespace core\auth;
 
+use core\Arr;
+
 abstract class Instance {
 	private $name;
 	private $options;
@@ -23,9 +25,9 @@ abstract class Instance {
 	
 	abstract function init();
 	abstract function getUser();
-	abstract function login(core\credentials\Instance $credentials, $force = false);
-	abstract function createUser(core\credentials\Instance $credentials, $userInfo);
+	abstract function login(\core\credentials\Instance $credentials, $force = false);
+	abstract function createUser(\core\credentials\Instance $credentials, $userInfo);
 	abstract function deleteUser($id);
-	abstract function updateUserCredentials($id, core\credentials\Instance $credentials);
+	abstract function updateUserCredentials($id, \core\credentials\Instance $credentials);
 	abstract function updateUserInfo($id, $userInfo);
 }

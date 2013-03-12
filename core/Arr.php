@@ -34,11 +34,11 @@ class Arr {
 			$path = substr($key, 0, $firstSep);
 			$key = substr($key, $firstSep + 1);
 			
-			if (!is_array($array[$path])) {
+			if (!array_key_exists($path, $array)) {
 				$array[$path] = array();
 			}
 			
-			self::setRecursive($array, $key, $value);
+			self::setRecursive($array[$path], $key, $value);
 			return;
 		}
 		if ($key == '') {

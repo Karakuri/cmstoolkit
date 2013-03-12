@@ -27,7 +27,7 @@ return array(
 		'default' => array(
 			'class' => 'mongo',
 			'conn' => 'default',
-			'db' => 'test',
+			'db' => 'cmstoolkit',
 			'collection' => 'users',
 		),
 	),

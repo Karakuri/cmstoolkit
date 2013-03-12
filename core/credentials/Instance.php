@@ -3,6 +3,6 @@
 namespace core\credentials;
 
 interface Instance {
-	abstract function getIdentifier();
-	abstract function getPayload();
+	public function getIdentifier();
+	public function getPayload();
 }

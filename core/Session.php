@@ -42,13 +42,12 @@ class Session {
 	}
 	
 	public static function _write($id, $data) {
-		self::flushUserInfo($data);
+		self::flushUserInfo();
 		self::$instance->write($id, $data);
 	}
 	
-	private static function flushUserInfo($data) {
-		$session = session_decode($data);
-		foreach (Arr::get($session, 'auth', array()) as $name => $user) {
+	private static function flushUserInfo() {
+		foreach (self::get('auth', array()) as $name => $user) {
 			if ($user->needsFlush()) {
 				Auth::wrench($name)->updateUserInfo($user->getId(), $user->getUserInfo());
 			}

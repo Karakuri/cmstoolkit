@@ -2,4 +2,4 @@
 
 namespace core\exceptions;
 
-class RedirectException extends \Exception {};
+class UserAlreadyExistsException extends \Exception {};

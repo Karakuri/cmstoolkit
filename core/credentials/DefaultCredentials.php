@@ -2,7 +2,9 @@
 
 namespace core\credentials;
 
-class DefaultCredentials extends Instance {
+use core\Config;
+
+class DefaultCredentials implements Instance {
 	private $username;
 	private $password;
 	
@@ -18,7 +20,7 @@ class DefaultCredentials extends Instance {
 	public function getPayload() {
 		return array(
 			'username' => $this->username,
-			'password' => hash('sha256', Config::get('salt') . $this->password)
+			'password' => hash('sha256', Config::get('config.salt') . $this->password)
 		);
 	}
 }
