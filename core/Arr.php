@@ -24,4 +24,27 @@ class Arr {
 		
 		return $array[$key];
 	}
+	
+	public static function set(&$array, $key, $value) {
+		self::setRecursive($array, $key, $value);
+	}
+	
+	private function setRecursive(&$array, $key, &$value) {
+		if (false !== ($firstSep = strpos($key, '.'))) {
+			$path = substr($key, 0, $firstSep);
+			$key = substr($key, $firstSep + 1);
+			
+			if (!is_array($array[$path])) {
+				$array[$path] = array();
+			}
+			
+			self::setRecursive($array, $key, $value);
+			return;
+		}
+		if ($key == '') {
+			$array[] = $value;
+			return;
+		} 
+		$array[$key] = $value;
+	}
 }

@@ -26,7 +26,7 @@ class TwigView extends Instance {
 				'route_param' => new TwigRouteParameterObject($controller),
 				'cookie' => new TwigCookieObject($controller),
 				'snippet' => new TwigSnippetObject($controller),
-				'config' => new TwigConfigObject(),
+				'conf' => new TwigConfigObject(),
 				));
 	}
 }
