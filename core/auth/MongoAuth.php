@@ -40,8 +40,14 @@ class MongoAuth extends Instance {
 	}
 	
 	public function deleteUser($id) {
-		
+		$this->collection->remove(array('_id' = new MongoId($id)));
 	}
-	public function updateUserCredentials($id, core\credentials\Instance $credentials) {}
-	public function updateUserInfo($id, $userInfo) {}
+	
+	public function updateUserCredentials($id, core\credentials\Instance $credentials) {
+		$this->collection->update(array('_id' => new MongoId($id)), array('credentials' => $credentials->getIdentifier()));
+	}
+	
+	public function updateUserInfo($id, $userInfo) {
+		$this->collection->update(array('_id' => new MongoId($id)), array('userInfo' => $userInfo));
+	}
 }
