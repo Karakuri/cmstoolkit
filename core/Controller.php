@@ -17,11 +17,6 @@ class Controller {
 		$this->request = $request;
 		$this->route = Routes::get($request->getPath(), $this->request->getMethod());
 		$this->metadata = Metadata::load($this->getPagePath());
-		
-		if (!$this->route) {
-			throw new PageNotFoundException($request->getPath());
-		}
-		
 		$this->attributes = new Attributes();
 		
 		foreach ($this->metadata->get('snippets.preload', array()) as $val) {
