@@ -62,7 +62,7 @@ class Request {
 		return $reqUri;
 	}
 	
-	static function getFromRequest() {
+	static function wrenchFromRequest() {
 		return new self($_SERVER, $_GET + $_POST, $_COOKIE);
 	}
 }

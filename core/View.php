@@ -6,7 +6,7 @@ class View {
 
 	public static function get($path, $type = null) {
 		if ($type !== null) {
-			$viewName = $options['type'];
+			$viewName = $type;
 		} else {
 			$viewName = Config::get('config.view');
 		}

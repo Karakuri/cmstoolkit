@@ -30,13 +30,13 @@ class MongoSession implements Instance {
 	
 	function write($id, $data) {
 		if ($this->data != $data) {
-			$this->collection->save(array('_id' => new MongoId($id), 'data' => $data, 'updateDate' => new MongoDate()));
+			$this->collection->save(array('_id' => $id, 'data' => $data, 'updateDate' => new MongoDate()));
 		}
 	}
 	
 	function destroy($id) {
 		try {
-			$this->collection->remove(array('_id' => new MongoId($id)));
+			$this->collection->remove(array('_id' => $id));
 		} catch (Exception $e) {
 			return false;
 		}

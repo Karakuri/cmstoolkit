@@ -6,7 +6,7 @@ use core\Controller;
 include '../bootstrap.php';
 
 try {
-	$controller = new Controller(Request::getFromRequest());
+	$controller = new Controller(Request::wrenchFromRequest());
 	echo $controller->renderPage();
 } catch (RedirectException $e) {
 	header('Location: ' . $e->getMessage(), true, $e->getCode());
