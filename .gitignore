@@ -1,2 +1,5 @@
+.buildpath
+.settings/
+.project
 logs/**/*
 cache/**/*
