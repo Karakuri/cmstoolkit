@@ -23,12 +23,12 @@ class IncludeAssetsSnippet extends Instance {
 	public function onPostRender($html, $result) {
 		$scripts = '';
 		foreach ($this->js as $src) {
-			$scripts .=  '<script src="' . $src . '"></script>' . "\n";
+			$scripts .=  '<script src="' . URL::normalize($src) . '"></script>' . "\n";
 		}
 		
 		$styles = '';
 		foreach ($this->css as $href) {
-			$styles .=  '<link rel="stylesheet" href="' . $href . '" />' . "\n";
+			$styles .=  '<link rel="stylesheet" href="' . URL::normalize($href) . '" />' . "\n";
 		}
 		
 		if ($result) $html = $result;
