@@ -89,8 +89,7 @@ class Controller {
 	
 	public function registerEvent($name, $callable) {
 		if (!is_callable($callable)) {
-			// TODO
-			return;
+			throw new InvalidCallableException();
 		}
 		
 		$this->events[$name][] = $callable;
