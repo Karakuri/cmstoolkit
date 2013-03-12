@@ -10,6 +10,6 @@ class Attributes {
 	}
 	
 	public function set($key, $value) {
-		Arr::setRecursive($this->attributes, $key, $value);
+		Arr::set($this->attributes, $key, $value);
 	}
 }
