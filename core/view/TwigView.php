@@ -37,7 +37,9 @@ class TwigView extends Instance {
 					'cookie' => new TwigCookieObject($controllerOrSnippet),
 					'conf' => new TwigConfigObject(),
 					));
-		}
+		} else if (is_array($controllerOrSnippet)) {
+            return $this->twig->render($this->getPath(), $controllerOrSnippet);
+        }
 		
 		throw new \InvalidArgumentException('view needs controller or snippet instance', 1, '');
 	}

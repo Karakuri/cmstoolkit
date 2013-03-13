@@ -3,7 +3,6 @@
 namespace core;
 
 use core\snippets\Instance;
-use core\exceptions\PageNotFoundException;
 
 class Controller {
 	private $route;
