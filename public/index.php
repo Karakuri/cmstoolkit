@@ -8,7 +8,7 @@ include '../bootstrap.php';
 
 try {
 	$controller = new Controller(Request::wrenchFromRequest());
-    $controller->callEvent('onPostInit');
+    $controller->callEvent('postInit');
 	echo $controller->renderPage();
 } catch (RedirectException $e) {
 	header('Location: ' . $e->getMessage(), true, $e->getCode());

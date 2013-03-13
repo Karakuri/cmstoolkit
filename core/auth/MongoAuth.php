@@ -2,6 +2,8 @@
 
 namespace core\auth;
 
+use core\exceptions\LoginIncorrectException;
+
 use core\User;
 
 use core\Session;

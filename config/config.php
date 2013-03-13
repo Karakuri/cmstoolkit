@@ -30,6 +30,13 @@ return array(
 			'db' => 'cmstoolkit',
 			'collection' => 'users',
 		),
+			
+		'admin' => array(
+			'class' => 'mongo',
+			'conn' => 'default',
+			'db' => 'cmstoolkit',
+			'collection' => 'adminusers',
+		),
 	),
 	// ビュークラスを指定
 	'view' => 'twig',

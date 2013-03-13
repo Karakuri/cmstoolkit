@@ -19,8 +19,10 @@ class URL {
 			$base = strpos($base, strlen('https://'));
 		} else if (strpos($path, '//') === 0) {
 			$base = strpos($base, strlen('//'));
-		} else {
+		} else if ($base != '') {
 			$base = $_SERVER['HTTP_HOST'] . '/' . $base . '/';
+		} else {
+			$base = $_SERVER['HTTP_HOST'] . '/';
 		}
 		
 		return ($scheme ? $scheme . ':' : '') . '//' . $base . $path;

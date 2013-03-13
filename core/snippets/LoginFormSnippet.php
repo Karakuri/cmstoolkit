@@ -9,15 +9,15 @@ use core\URL;
 
 class LoginFormSnippet extends Instance {
 	public function init() {
-        $this->registerEvent('postInit', array($this, 'onPostInit'));
+        $this->getController()->registerEvent('postInit', array($this, 'onPostInit'));
     }
     
     public function onPostInit() {
-        if ($this->getMethod() == 'POST') {
+        if ($this->getController()->getMethod() == 'POST') {
             $credentials = Credentials::wrench($this->getOption('credentials'));
             foreach ($credentials->getRequiredKeys() as $key) {
-                if ($this->getParameter($key) === null) return;
-                $credentials->setParameter($key, $this->getParameter($key));
+                if ($this->getController()->getParameter($key) === null) return;
+                $credentials->setParameter($key, $this->getController()->getParameter($key));
             }
             
             try {

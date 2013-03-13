@@ -25,33 +25,13 @@ abstract class Instance {
 
         $this->init();
     }
-
-    protected function registerEvent($name, $callable) {
-        $this->controller->registerEvent($name, $callable);
+    
+    public function getController() {
+    	return $this->controller;
     }
 
     public function getOption($key, $orElse = null) {
         return Arr::get($this->options, $key, $orElse);
-    }
-
-    public function getCookie($key, $orElse = null) {
-        return $this->controller->getAttribute($key, $orElse);
-    }
-
-    protected function getParameter($key, $orElse = null) {
-        return $this->controller->getParameter($key, $orElse);
-    }
-
-    protected function getRouteParameter($key, $orElse = null) {
-        return $this->controller->getRouteParameter($key, $orElse);
-    }
-    
-    protected function getMethod() {
-        return $this->controller->getMethod();
-    }
-    
-    protected function redirect($uri, $status = 303) {
-        $this->controller->redirect($uri, $status);
     }
     
     public function render($path, $type = null) {

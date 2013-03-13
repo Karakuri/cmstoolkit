@@ -16,11 +16,11 @@ class TwigView extends Instance {
 		));
 		$this->twig->addTokenParser(new Project_Js_TokenParser());
 		$this->twig->addTokenParser(new Project_Css_TokenParser());
+		$this->twig->addTokenParser(new Project_Snippet_TokenParser());
 	}
 
 	public function render($controllerOrSnippet) {
 		if ($controllerOrSnippet instanceof Controller) {
-    		$this->twig->addTokenParser(new Project_Snippet_TokenParser());
 			return $this->twig->render($this->getPath(), array(
 					'controller' => $controllerOrSnippet,
 					'meta' => new TwigMetadataObject($controllerOrSnippet),
@@ -32,9 +32,10 @@ class TwigView extends Instance {
 			));
 		} else if ($controllerOrSnippet instanceof \core\snippets\Instance) {
 			return $this->twig->render($this->getPath(), array(
-					'snippet' => $controllerOrSnippet,
+					'controller' => $controllerOrSnippet->getController(),
+					'this' => $controllerOrSnippet,
 					'option' => new TwigOptionObject($controllerOrSnippet),
-					'cookie' => new TwigCookieObject($controllerOrSnippet),
+					'cookie' => new TwigCookieObject($controllerOrSnippet->getController()),
 					'conf' => new TwigConfigObject(),
 					));
 		} else if (is_array($controllerOrSnippet)) {
@@ -96,7 +97,7 @@ class TwigRouteParameterObject {
 class TwigCookieObject {
 	private $controllerOrSnippet;
 
-	public function __construct($controllerOrSnippet) {
+	public function __construct(Controller $controllerOrSnippet) {
 		$this->controllerOrSnippet = $controllerOrSnippet;
 	}
 
