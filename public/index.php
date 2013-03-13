@@ -14,5 +14,6 @@ try {
 	header('Location: ' . $e->getMessage(), true, $e->getCode());
 } catch (Exception $e) {
     $view = View::wrench('pages/error/500.html');
-    $view->render(array('message' => $e->getMessage(), 'trace' => $e->getTraceAsString()));
+    header('HTTP', true, 500);
+    echo $view->render(array('exception' => $e));
 }

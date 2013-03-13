@@ -13,7 +13,7 @@ class Metadata {
 			$dir = str_replace('/', DS, substr($path, 0, $lastSep));
 			$filename = substr($path, $lastSep + 1);
 		}
-		$this->metadata = File::exec(METADATA_PATH . $dir, $filename);
+		$this->metadata = File::exec(METADATA_PATH . '/' . $dir, $filename);
 		
 		if ($this->get('extends') !== null) {
 			$this->super = self::load($this->get('extends'));

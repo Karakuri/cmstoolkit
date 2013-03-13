@@ -133,14 +133,14 @@ class Project_Snippet_TokenParser extends \Twig_TokenParser
 		$lineno = $token->getLine();
 		$name = $stream->expect(\Twig_Token::NAME_TYPE)->getValue();
 		$alias = null;
-        $options = new Twig_Node_Expression_Array(array(), $token->getLine());
+        $options = new \Twig_Node_Expression_Array(array(), $token->getLine());
 
 		if ($stream->test('as')) {
 			$stream->next();
 			$alias = $stream->expect(\Twig_Token::NAME_TYPE)->getValue();
 		}
         
-        if ($stream->test('{')) {
+        if ($stream->getCurrent()->getValue() == '{') {
             $options = $this->parser->getExpressionParser()->parseHashExpression();
         }
 

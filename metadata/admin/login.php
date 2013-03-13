@@ -1,6 +1,8 @@
 <?php
 
 return array(
+	'title' => 'Admin Login',
+		
     'view' => array(
         'path' => 'pages/admin/login.html',
     ),
