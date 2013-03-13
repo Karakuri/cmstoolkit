@@ -14,12 +14,13 @@ class TwigView extends Instance {
 		$this->twig = new \Twig_Environment($this->loader,array(
 				'cache' => Config::get('twig.cache_path')
 		));
-		$this->twig->addTokenParser(new Project_Snippet_TokenParser());
 		$this->twig->addTokenParser(new Project_Js_TokenParser());
+		$this->twig->addTokenParser(new Project_Css_TokenParser());
 	}
 
 	public function render($controllerOrSnippet) {
 		if ($controllerOrSnippet instanceof Controller) {
+    		$this->twig->addTokenParser(new Project_Snippet_TokenParser());
 			return $this->twig->render($this->getPath(), array(
 					'controller' => $controllerOrSnippet,
 					'meta' => new TwigMetadataObject($controllerOrSnippet),
@@ -200,6 +201,47 @@ class Project_Js_Node extends \Twig_Node
 		->outdent()
 		->write('}')
 		->write('$snippet->addJs(\'' . $this->getAttribute('src') . '\');' . "\n")
+		;
+	}
+}
+
+class Project_Css_TokenParser extends \Twig_TokenParser
+{
+	public function parse(\Twig_Token $token)
+	{
+		$stream = $this->parser->getStream();
+		$lineno = $token->getLine();
+		$href = $stream->expect(\Twig_Token::STRING_TYPE)->getValue();
+
+		$this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
+
+		return new Project_Css_Node($href, $lineno, $this->getTag());
+	}
+
+	public function getTag()
+	{
+		return 'css';
+	}
+}
+
+class Project_Css_Node extends \Twig_Node
+{
+	public function __construct($href, $lineno, $tag = null)
+	{
+		parent::__construct(array(), array('href' => $href), $lineno, $tag);
+	}
+
+	public function compile(\Twig_Compiler $compiler)
+	{
+		$compiler
+		->addDebugInfo($this)
+		->write('if (null === ($snippet = $context[\'controller\']->getSnippet(\'include_assets\'))) { ' . "\n")
+		->indent()
+		->write('$snippet = core\\Snippet::get(\'include_assets\');' . "\n")
+		->write('$snippet->_init(\'include_assets\', $context[\'controller\']);' . "\n")
+		->outdent()
+		->write('}')
+		->write('$snippet->addCss(\'' . $this->getAttribute('href') . '\');' . "\n")
 		;
 	}
 }
