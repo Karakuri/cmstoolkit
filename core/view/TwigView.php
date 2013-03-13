@@ -133,15 +133,20 @@ class Project_Snippet_TokenParser extends \Twig_TokenParser
 		$lineno = $token->getLine();
 		$name = $stream->expect(\Twig_Token::NAME_TYPE)->getValue();
 		$alias = null;
+        $options = new Twig_Node_Expression_Array(array(), $token->getLine());
 
 		if ($stream->test('as')) {
 			$stream->next();
 			$alias = $stream->expect(\Twig_Token::NAME_TYPE)->getValue();
 		}
+        
+        if ($stream->test('{')) {
+            $options = $this->parser->getExpressionParser()->parseHashExpression();
+        }
 
 		$this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
 
-		return new Project_Snippet_Node($name, $alias, $lineno, $this->getTag());
+		return new Project_Snippet_Node($name, $alias, $options, $lineno, $this->getTag());
 	}
 
 	public function getTag()
@@ -152,16 +157,18 @@ class Project_Snippet_TokenParser extends \Twig_TokenParser
 
 class Project_Snippet_Node extends \Twig_Node
 {
-	public function __construct($name, $alias, $lineno, $tag = null)
+	public function __construct($name, $alias, $options, $lineno, $tag = null)
 	{
-		parent::__construct(array(), array('name' => $name, 'alias' => $alias), $lineno, $tag);
+		parent::__construct(array('options' => $options), array('name' => $name, 'alias' => $alias), $lineno, $tag);
 	}
 
 	public function compile(\Twig_Compiler $compiler)
 	{
 		$compiler
 		->addDebugInfo($this)
-		->write('core\\Snippet::get(\''.$this->getAttribute('name').'\')->_init(\''.($this->getAttribute('alias') ?: $this->getAttribute('name')).'\', $context[\'controller\']);' . "\n")
+		->write('core\\Snippet::get(\''.$this->getAttribute('name').'\')->_init(\''.($this->getAttribute('alias') ?: $this->getAttribute('name')).'\', $context[\'controller\'], ')
+        ->subcompile($this->getNode('options'))
+        ->raw(');' . "\n")
 		;
 	}
 }
