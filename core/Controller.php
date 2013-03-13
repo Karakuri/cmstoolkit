@@ -18,16 +18,15 @@ class Controller {
 		$this->metadata = Metadata::load($this->getPagePath());
 		$this->attributes = new Attributes();
 		
-		foreach ($this->metadata->get('snippets.preload', array()) as $val) {
-			if (is_array($name)) {
-				$name = $val[0];
-				$alias = array_key_exists('as', $val) ? $val['as'] : $name;
-			} else {
-				$name = $val;
-				$alias = $name;
-			}
-			$snippet = Snippet::get($name);
-			$snippet->_init($alias, $this);
+		foreach ($this->metadata->get('snippets', array()) as $name => $val) {
+            if (!array_key_exists($val, 'preload')) {
+                continue;
+            }
+            
+            $class = $val['preload'];
+
+			$snippet = Snippet::get($class);
+			$snippet->_init($name, $this);
 		}
 	}
 	
