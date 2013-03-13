@@ -13,6 +13,9 @@ return array(
                 'credentials' => 'default',
                 'redirect_to' => 'admin',
             ),
+            'view' => array(
+                'path' => 'snippets/login_form/default.html',
+            ),
         )
     )
 );

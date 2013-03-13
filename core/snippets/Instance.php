@@ -3,6 +3,7 @@
 namespace core\snippets;
 
 use core\Controller;
+use core\View;
 
 abstract class Instance {
 
@@ -44,6 +45,11 @@ abstract class Instance {
     
     protected function redirect($uri, $status = 303) {
         $this->controller->redirect($uri, $status);
+    }
+    
+    public function render() {
+        $view = View::wrench($this->getOption('view.path'), $this->getOption('view.type'));
+        return $view->render($this);
     }
 
     abstract function init();
