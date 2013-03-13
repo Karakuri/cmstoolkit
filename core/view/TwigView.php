@@ -34,6 +34,8 @@ class TwigView extends Instance {
 			return $this->twig->render($this->getPath(), array(
 					'controller' => $controllerOrSnippet->getController(),
 					'this' => $controllerOrSnippet,
+					'param' => new TwigParameterObject($controllerOrSnippet->getController()),
+					'route_param' => new TwigRouteParameterObject($controllerOrSnippet->getController()),
 					'option' => new TwigOptionObject($controllerOrSnippet),
 					'cookie' => new TwigCookieObject($controllerOrSnippet->getController()),
 					'conf' => new TwigConfigObject(),
