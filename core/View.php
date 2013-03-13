@@ -4,7 +4,7 @@ namespace core;
 
 class View {
 
-	public static function get($path, $type = null) {
+	public static function wrench($path, $type = null) {
 		if ($type !== null) {
 			$viewName = $type;
 		} else {

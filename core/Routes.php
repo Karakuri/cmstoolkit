@@ -9,7 +9,6 @@ class Routes {
 	private $pagePath;
 	
 	public function __construct($path, $pagePath) {
-		$this->method = 'GET';
 		foreach (array('GET', 'POST', 'PUT', 'DELETE', 'HEAD') as $method) {
 			if (strpos($path, $method . ' ') === 0) {
 				$this->method = $method;
@@ -37,7 +36,7 @@ class Routes {
 	}
 	
 	public function match($uri, $method = null) {
-		if ($method !== null && $this->method !== $method) {
+		if ($this->method !== null && $this->method !== $method) {
 			return false;
 		}
 		

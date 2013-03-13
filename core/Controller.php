@@ -45,6 +45,10 @@ class Controller {
 	public function getRouteParameter($key = null, $orElse = null) {
 		return $this->route->getParameter($key, $orElse);
 	}
+    
+    public function getMethod() {
+        return $this->request->getMethod();
+    }
 	
 	public function getMetadata($key = null, $orElse = null) {
 		return $this->metadata->get($key, $orElse);
@@ -74,7 +78,7 @@ class Controller {
 	}
 	
 	public function renderPage() {
-		$view = View::get($this->getMetadata('view.path'), $this->getMetadata('view.type'));
+		$view = View::wrench($this->getMetadata('view.path'), $this->getMetadata('view.type'));
 		$this->callEvent('preRender', array($view));
 		$result = $view->render($this);
 		$filtered = $this->callEvent('postRender', array($result));
